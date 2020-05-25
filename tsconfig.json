@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        "allowJs": true,
+        "checkJs": true,
+        "module": "CommonJS",
+        "noImplicitAny": true,
+        "removeComments": true,
+        "preserveConstEnums": true,
+        "sourceMap": true
+    },
+    "include": [
+        "src/**/*"
+    ],
+    "exclude": [
+        "node_modules",
+        "**/node_modules/*"
+    ]
+}
