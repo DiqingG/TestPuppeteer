@@ -36,7 +36,7 @@ export class ProductBuyer {
         const { username, password } = getAccount();
         if (!username || !password) {
             console.error("No username & password found. Exiting");
-            process.exit(1);
+            return process.exit(0);
         }
         // sign in
         await this.page.goto(signInUrl, waitOption);
@@ -62,7 +62,7 @@ export class ProductBuyer {
             await this.screenshot("modal-dismissed.png");
         }
         const searchbox = await this.page.$("#gh-search-input");
-        console.log("Typing " + this.product.name);
+        console.log("Typing " + this.product.searchKey);
         await searchbox.type(this.product.searchKey, { delay: 200 });
         await this.screenshot("search-filled.png");
         console.log("Wait for search results to load");

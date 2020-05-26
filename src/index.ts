@@ -6,7 +6,7 @@ import { Product } from "./Product";
 const url = "https://www.bestbuy.com/";
 
 (async () => {
-    const browser = await launch();
+    const browser = await launch({ args: ["--no-sandbox"] });
     try {
         const page = await browser.newPage();
         await page.setUserAgent(

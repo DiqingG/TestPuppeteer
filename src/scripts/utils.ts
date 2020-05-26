@@ -1,8 +1,11 @@
 import { config } from "dotenv";
 import * as path from "path";
-import { NavigationOptions, Page } from "puppeteer";
+import { NavigationOptions } from "puppeteer";
 
 export const getAccount = () => {
+    /**
+     * Need a better way to get credentials
+     */
     if (process.env.NODE_ENV !== "production") {
         // @ts-ignore
         config(path.resolve(__dirname, ".env"));
