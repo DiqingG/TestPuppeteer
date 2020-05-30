@@ -14,14 +14,14 @@ RUN apt-get update \
 
 # If running Docker >= 1.13.0 use docker run's --init arg to reap zombie processes, otherwise
 # uncomment the following lines to have `dumb-init` as PID 1
-ADD https://github.com/Yelp/dumb-init/releases/download/v1.2.0/dumb-init_1.2.0_amd64 /usr/local/bin/dumb-init
-RUN chmod +x /usr/local/bin/dumb-init
-ENTRYPOINT ["dumb-init", "--"]
+# ADD https://github.com/Yelp/dumb-init/releases/download/v1.2.0/dumb-init_1.2.0_amd64 /usr/local/bin/dumb-init
+# RUN chmod +x /usr/local/bin/dumb-init
+# ENTRYPOINT ["dumb-init", "--"]
 
 # Uncomment to skip the chromium download when installing puppeteer. If you do,
 # you'll need to launch puppeteer with:
 #     browser.launch({executablePath: 'google-chrome-unstable'})
-# ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
 
 # # Install puppeteer so it's available in the container.
 # RUN npm i puppeteer \
@@ -37,7 +37,7 @@ ENTRYPOINT ["dumb-init", "--"]
 USER node
 RUN mkdir -p /home/node/app
 # Run the specified command within the container.
-CMD ["google-chrome-unstable", "npm", "release"]
+CMD ["npm", "release"]
 
 # Set the working directory.
 WORKDIR /home/node/app
@@ -46,4 +46,4 @@ COPY --chown=node:node package.json .
 RUN npm install
 # Copy the rest of your app's source code from your host to your image filesystem.
 COPY --chown=node:node . .
-RUN npm run release
+RUN npm run build

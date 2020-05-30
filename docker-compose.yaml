@@ -1,0 +1,7 @@
+version: "3"
+
+services:
+    product-buyer:
+        build: .
+        env_file:
+            - .env

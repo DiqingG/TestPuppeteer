@@ -15,6 +15,6 @@ export const getAccount = () => {
     return { username, password };
 };
 
-export const waitOption: NavigationOptions = { timeout: 0, waitUntil: "domcontentloaded" };
+export const waitOption: NavigationOptions = { timeout: 0, waitUntil: "networkidle2" };
 
 export const screenShotPath = (name: string) => `./screenshot/${name}`;
