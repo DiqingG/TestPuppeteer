@@ -1,6 +1,8 @@
 import { Page } from "puppeteer";
 import { getAccount, screenShotPath, waitOption } from "./scripts/utils";
 import { Product } from "./Product";
+import { saveProduct } from "./storage";
+import { Database } from "arangojs";
 
 const signInUrl = "https://www.bestbuy.com/signin";
 
@@ -8,19 +10,22 @@ export class ProductBuyer {
     readonly page: Page;
     readonly product: Product;
     modalClosed: boolean;
-    constructor(page: Page, product: Product) {
+    readonly db: Database;
+    constructor(page: Page, product: Product, db: Database) {
         this.page = page;
         this.product = product;
         this.modalClosed = false;
+        this.db = db;
     }
 
     async buy() {
-        console.log("Trying to sign in....");
-        await this.login();
+        // console.log("Trying to sign in....");
+        // await this.login();
         console.log("Searching product....");
         await this.searchProduct();
         console.log("Checking in stock....");
         const inStock = await this.checkInStock();
+        this.product.inStock = inStock;
         if (inStock) {
             console.log("Adding to cart...");
             // await addToCart()
@@ -28,7 +33,7 @@ export class ProductBuyer {
         } else {
             console.warn("Item is not in stock, stopping execution.....");
         }
-
+        await saveProduct(this.db, this.product);
         return Promise.resolve();
     }
 
@@ -71,11 +76,12 @@ export class ProductBuyer {
     }
 
     private async searchProduct() {
-        console.log("Searching " + this.product.name);
         await this.closeModal();
+
+        console.log("Searching " + this.product.name);
         const searchbox = await this.page.$("#gh-search-input");
         console.debug("Typing " + this.product.searchKey);
-        await searchbox.type(this.product.searchKey, { delay: 200 });
+        await searchbox.type(this.product.searchKey);
         await this.screenshot("search-filled.png");
         console.debug("Wait for search results to load");
         await Promise.all([searchbox.press("Enter"), this.page.waitForNavigation(waitOption)]);

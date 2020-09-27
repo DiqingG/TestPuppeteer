@@ -11,6 +11,7 @@ module.exports = {
     externals: {
         puppeteer: "require('puppeteer')",
         dotenv: "require('dotenv')",
+        "@google-cloud/datastore": "require('@google-cloud/datastore')",
     },
     resolve: {
         extensions: [".tsx", ".ts", ".js", ".json"],
